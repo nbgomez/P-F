@@ -17,7 +17,8 @@ router.get('/helloworld', function(req, res, next) {
 	  // period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
 	}, function (err, quotes) {
 	  //...
-	  console.log( quotes.toString() );
+	  quotes.forEach( function (item) { console.log( item ) } );
+	  //console.log( quotes.toString() );
 	  res.render('helloworld', { title: 'Hello world!', 'quotes':quotes });
 	});
 	

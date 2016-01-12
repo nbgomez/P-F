@@ -4,6 +4,6 @@ block content
   h1= title
   p Welcome to #{title}
   ul
-     each quote, i in quotes
-        li
-           a(href="mailto:#{quote}")
+     for quote in quotes
+        li #{quote.date}, #{quote.close}
+            
