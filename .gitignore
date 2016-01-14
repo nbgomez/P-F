@@ -1,0 +1,4 @@
+*.jade~
+*.js~
+bower_components
+node_modules
