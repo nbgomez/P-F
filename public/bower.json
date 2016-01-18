@@ -11,6 +11,7 @@
   "dependencies": {
     "angular": "~1.4.8",
     "angular-route": "~1.4.8",
-    "angular-bootstrap": "~1.0.3"
+    "angular-bootstrap": "~1.0.3",
+    "ng-table": "~0.8.3"
   }
 }
