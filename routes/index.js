@@ -1,3 +1,4 @@
+var debug = require('debug')('index');
 var express = require('express');
 var router = express.Router();
 
@@ -8,18 +9,29 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/helloworld', function(req, res, next) {
+router.get('/getPrices/:symbol', function(req, res, next) {
 	
-	yahooFinance.historical({
-	  symbol: 'AAPL',
-	  from: '2012-01-01',
-	  to: '2012-12-31',
-	  // period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
-	}, function (err, quotes) {
+	var ticker = req.params.symbol.substring(1);
+	
+	config = { symbol: ticker,
+						from: '2012-01-01',
+						to: '2012-12-31' 
+						// period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
+						};
+						
+	debug( config );
+	
+	yahooFinance.historical(config
+	  
+	, function (err, quotes) {
 	  //...
+	  debug( "yahooFinance" );
+	  if( err ){ debug( err) ; }
 	  quotes.forEach( function (item) { console.log( item ) } );
 	  //console.log( quotes.toString() );
-	  res.render('helloworld', { title: 'Hello world!', 'quotes':quotes });
+	  res.writeHead( 200, { 'content-type':'x-application/json'});
+	  res.end( JSON.stringify( quotes ) );
+	  
 	});
 	
 	/*yahooFinance.snapshot({
