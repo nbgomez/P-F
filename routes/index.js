@@ -14,8 +14,8 @@ router.get('/getPrices/:symbol', function(req, res, next) {
 	var ticker = req.params.symbol.substring(1);
 	
 	config = { symbol: ticker,
-						from: '2012-01-01',
-						to: '2012-12-31' 
+						from: '2014-01-01',
+						to: '2016-01-16' 
 						// period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
 						};
 						

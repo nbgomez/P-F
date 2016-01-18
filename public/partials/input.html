@@ -5,4 +5,16 @@
     <input type="submit" ng-click="getPrices()" value="Get Prices" />
   </form>
   <pre>Symbol = {{symbol}}</pre>
+  
+  <table ng-table="tableParams" show-filter="true" class="table">
+        <thead>
+				  <tr ng-repeat="user in $data">
+					    <td ng-repeat="column in columns" ng-show="column.visible" sortable="column.field">
+					        {{user[column.field][column.subfield] || user[column.field]}}
+					    </td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+
 </div>
