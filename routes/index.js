@@ -6,7 +6,7 @@ var yahooFinance = require('yahoo-finance');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Point & Figure' });
 });
 
 router.get('/getPrices/:symbol', function(req, res, next) {
