@@ -27,7 +27,7 @@ router.get('/getPrices/:symbol', function(req, res, next) {
 	  //...
 	  debug( "yahooFinance" );
 	  if( err ){ debug( err) ; }
-	  quotes.forEach( function (item) { console.log( item ) } );
+	  //quotes.forEach( function (item) { console.log( item ) } );
 	  //console.log( quotes.toString() );
 	  res.writeHead( 200, { 'content-type':'x-application/json'});
 	  res.end( JSON.stringify( quotes ) );
