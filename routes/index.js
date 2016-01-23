@@ -1,6 +1,7 @@
 var debug = require('debug')('index');
 var express = require('express');
 var router = express.Router();
+var pfgen = require('./pfGeneration' );
 
 var yahooFinance = require('yahoo-finance');
 
@@ -29,6 +30,9 @@ router.get('/getPrices/:symbol', function(req, res, next) {
 	  if( err ){ debug( err) ; }
 	  //quotes.forEach( function (item) { console.log( item ) } );
 	  //console.log( quotes.toString() );
+	  var pf = new pfGen();
+	  pf.parsePrices( quotes );
+	  
 	  res.writeHead( 200, { 'content-type':'x-application/json'});
 	  res.end( JSON.stringify( quotes ) );
 	  
