@@ -11,15 +11,16 @@ Under 0.25	0.0625
 500 to 1,000	5.00
 1,000 to 25,000	50.00
 25,000 and up	500.00*/
-var upperLevels = [ 0, 0.25, 1, 5, 20, 100, 200, 500, 1000, 25000 ];
-var increments = [ 0, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 5, 50];
+var upperLevels = [ 0, 0.25, 		1, 			5, 		20, 100, 200, 500, 1000, 25000 ];
+var increments = [ 	0, 0.0625, 	0.125, 	0.25, 0.5, 1, 	2, 	4, 		5, 		50];
 
 var getIncrement = function (value){
 	
 	var index = 0;
 	var check = function( value ){
-		debug( index,value );
+		//debug( index,value, upperLevels[index] );
 		if( value <= upperLevels[index] ){
+			//debug( "found");
 			return { "base":upperLevels[index-1], "increment":increments[index]};
 		}
 		else {
@@ -30,59 +31,70 @@ var getIncrement = function (value){
 		return check( value );
 	}
 	
-	debug( "value", value );
+	//debug( "value", value );
 	return check( value );
 }
 
 var getLimits = function( closePrice ){
+	//debug( "getLimits", closePrice );
 	 var configValues = getIncrement( closePrice );
 	 var curBase = configValues.base, 
 	 			upperLimit = curBase+ configValues.increment;
-	 while ( !( (closePrice > curBase) && (closePrice < upperLimit ) ) ) {
-	 		
+	 			
+	 while ( !( (closePrice >= curBase) && (closePrice < upperLimit ) ) ) {
+	 		//debug( closePrice, curBase, upperLimit );
 	 		curBase = upperLimit;
 	 		upperLimit = curBase + configValues.increment;
 	 		
 	 }
 	 
-	 return{ "lower": curBase, "upper":upperLimit };
+	 return{ "lower": curBase, "upper":upperLimit, "base":configValues.base, "increment":configValues.increment };
 };
 
 function pfGen () {
-	var chartData = [];
+	this.chartData = [];
 	var curSeries;
 	var uLimit = -1;
 	var uuLimit = uLimit
 	var lLimit = 10000;
 	var llLimit = lLimit;
+	var increment;
+	var base;
 	var startPrice;
 	var dir = 0;
 	
+	this.fnc = initialLimits;
+	 
 	function initialLimits ( price ){
-		
+		var limits = getLimits( price.close );
 		debug("initial limits", getLimits( price.close ));
 		
-		uLimit = Math.ceil( price.close );
-		lLimit = Math.floor( price.close );
+		uLimit = limits.upper;
+		lLimit = limits.lower;
 		startPrice = lLimit;
-		uuLimit = uLimit + 3;
-		llLimit = lLimit - 1;
+		uuLimit = uLimit + 3*limits.increment;
+		llLimit = lLimit - 3*limits.increment;
+		increment = limits.increment;
+		base = limits.base;
 		//console.log( "initialLimits" );
 		this.pfFunction = unknown;
+		
+		return limits;
 		
 	};
 	function unknown( price ){
 		//console.log( "unkown", price.close );
 		if( price.close > uuLimit ){
 			curSeries = { 'start': startPrice, 'count': 3 };
-			uLimit = uLimit + 1;
-			llimit = uLimit - 4;
+			uLimit = uLimit + increment;
+			llimit = uLimit - increment*3;
+			
 			this.pfFunction = upward;
 		}
 		else if( price.close < llLimit ) {
 			curSeries = {start:startPrice, count: -3 };
-			lLimit = lLimit + 1;
-			uuLimit = lLimit + 4;
+			lLimit = lLimit + increment;
+			uuLimit = lLimit - 3*increment;
 			this.pfFunction = downward;
 		}
 	}
@@ -90,17 +102,17 @@ function pfGen () {
 	function downward( price ){
 		
 		if(price.close < lLimit ){
-			lLimit--;
+			lLimit = lLimit-increment;
 			uuLimit = lLimit + 4;
 			curSeries.count--;
 			//debug("down", price.close, curSeries );
 		}
 		else if ( price.close > uuLimit ) {
 			//debug( curSeries );
-			chartData.push( curSeries )
+			this.chartData.push( curSeries )
 			curSeries = { 'start': lLimit , 'count': 3 };
 			uLimit = Math.ceil(price.close );
-			llLimit = uLimit-4;
+			llLimit = uLimit-3*increment;
 			this.pfFunction = upward;
 		}
 		
@@ -109,16 +121,16 @@ function pfGen () {
 	function upward( price ){
 		
 		if(price.close > uLimit ){
-			uLimit++;
-			llLimit = uLimit - 4;
+			uLimit = uLimit + increment;
+			llLimit = uLimit - 3*increment;
 			curSeries.count++;
 			//debug( curSeries );
 			//debug("down", price.close, curSeries );
 		}
 		else if ( price.close < lLimit ) {
 			//debug( curSeries );
-			chartData.push( curSeries )
-			curSeries = { 'start': uLimit -1, 'count': -3 };
+			this.chartData.push( curSeries )
+			curSeries = { 'start': uLimit -increment, 'count': -3 };
 			lLimit = Math.floor(price.close );
 			uuLimit = lLimit+4;
 			this.pfFunction = downward;
@@ -132,8 +144,11 @@ function pfGen () {
 pfGen.prototype.parsePrices = function(quotes){
 	var self = this;
 	quotes.forEach( function( val){ 
+		debug( val );
   	self.pfFunction( val );
   });
+  
+  return this.chartData;
 };
   	
 module.exports = pfGen;

@@ -31,7 +31,7 @@ router.get('/getPrices/:symbol', function(req, res, next) {
 	  //quotes.forEach( function (item) { console.log( item ) } );
 	  //console.log( quotes.toString() );
 	  var pf = new pfgen();
-	  pf.parsePrices( quotes );
+	  debug( pf.parsePrices( quotes ) );
 	  
 	  res.writeHead( 200, { 'content-type':'x-application/json'});
 	  res.end( JSON.stringify( quotes ) );
