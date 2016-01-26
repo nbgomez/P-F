@@ -4,7 +4,7 @@ var pfgen = require('../routes/pfGeneration.js');
 
 describe( "pfgenerator", function(){
 	
-	it( "test 1", function () {
+	it( "initialLimits", function () {
 
 		var pf = new pfgen();
 		
@@ -26,6 +26,13 @@ describe( "pfgenerator", function(){
 		assert.equal( limits.upper,126 );
 		assert.equal( limits.base, 100 );
 		assert.equal( limits.increment, 2 );
+		
+		limits = pf.fnc( {"close":200 } );
+		//debug( limits );
+		assert.equal( limits.lower, 200 );
+		assert.equal( limits.upper,204 );
+		assert.equal( limits.base, 200 );
+		assert.equal( limits.increment, 4 );
 		
 		limits = pf.fnc( {"close":0.12 } );
 		//debug( limits );
@@ -55,5 +62,19 @@ describe( "pfgenerator", function(){
 		assert.equal( limits.upper,5.5 );
 		assert.equal( limits.base, 5 );
 		
+	});
+	
+	it( "unknown", function () {
+
+		var pf = new pfgen();
+		
+		var quotes = [ {"close":25} ];
+		//var parsed = pf.parsePrices( quotes );
+		var limits = pf.fnc( {"close":25 } );
+		
+		var unk = pf.unk( {"close":21 } );
+		debug( unk );
+		assert.equal( unk.lLimit, 20 );
+		assert.equal( unk.uuLimit, 23 );
 	});
 });

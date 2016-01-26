@@ -82,21 +82,25 @@ function pfGen () {
 		return limits;
 		
 	};
+	
+	this.unk = unknown;
 	function unknown( price ){
 		//console.log( "unkown", price.close );
 		if( price.close > uuLimit ){
 			curSeries = { 'start': startPrice, 'count': 3 };
 			uLimit = uLimit + increment;
-			llimit = uLimit - increment*3;
+			llLimit = uLimit - increment*4;
 			
 			this.pfFunction = upward;
 		}
 		else if( price.close < llLimit ) {
 			curSeries = {start:startPrice, count: -3 };
-			lLimit = lLimit + increment;
-			uuLimit = lLimit - 3*increment;
+			lLimit = Math.floor(price.close) - increment;
+			uuLimit = lLimit + 3*increment;
 			this.pfFunction = downward;
 		}
+		
+		return { "llLimit":llLimit, "lLimit":lLimit, "uLimit":uLimit, "uuLimit":uuLimit };
 	}
 	
 	function downward( price ){
