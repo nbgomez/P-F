@@ -50,9 +50,9 @@ describe( "pfgenerator", function(){
 		
 		limits = pf.fnc( {"close":5 } );
 		//debug( limits );
-		assert.equal( limits.increment, 1 );
+		assert.equal( limits.increment, 0.5 );
 		assert.equal( limits.lower, 5 );
-		assert.equal( limits.upper,6 );
+		assert.equal( limits.upper,5.5 );
 		assert.equal( limits.base, 5 );
 		
 	});

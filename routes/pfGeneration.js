@@ -19,7 +19,7 @@ var getIncrement = function (value){
 	var index = 0;
 	var check = function( value ){
 		//debug( index,value, upperLevels[index] );
-		if( value <= upperLevels[index] ){
+		if( value < upperLevels[index] ){
 			//debug( "found");
 			return { "base":upperLevels[index-1], "increment":increments[index]};
 		}
