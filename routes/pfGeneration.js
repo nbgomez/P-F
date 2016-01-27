@@ -72,7 +72,7 @@ function pfGen () {
 		uLimit = limits.upper;
 		lLimit = limits.lower;
 		startPrice = lLimit;
-		uuLimit = uLimit + 3*limits.increment;
+		uuLimit = uLimit + 2*limits.increment;
 		llLimit = lLimit - 3*limits.increment;
 		increment = limits.increment;
 		base = limits.base;
@@ -86,10 +86,13 @@ function pfGen () {
 	this.unk = unknown;
 	function unknown( price ){
 		//console.log( "unkown", price.close );
-		if( price.close > uuLimit ){
+		
+		if( price.close >= uuLimit ){
+			console.log( "unknown", uuLimit );
+			
 			curSeries = { 'start': startPrice, 'count': 3 };
-			uLimit = uLimit + increment;
-			llLimit = uLimit - increment*4;
+			uLimit = Math.floor(price.close) + increment;
+			llLimit = uLimit - increment*5;
 			
 			this.pfFunction = upward;
 		}

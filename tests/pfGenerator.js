@@ -73,8 +73,19 @@ describe( "pfgenerator", function(){
 		var limits = pf.fnc( {"close":25 } );
 		
 		var unk = pf.unk( {"close":21 } );
-		debug( unk );
+		//debug( unk );
 		assert.equal( unk.lLimit, 20 );
 		assert.equal( unk.uuLimit, 23 );
+		
+		limits = pf.fnc( {"close":25} );
+		unk = pf.unk( {"close":28});
+		assert.equal( 24, unk.llLimit );
+		assert.equal( 29, unk.uLimit );
+		
+		limits = pf.fnc( {"close":25} );
+		unk = pf.unk( {"close":26});
+		assert.equal( 22, unk.llLimit );
+		assert.equal( 28, unk.uuLimit );
+		
 	});
 });
