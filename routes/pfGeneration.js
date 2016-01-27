@@ -105,7 +105,8 @@ function pfGen () {
 		
 		return { "llLimit":llLimit, "lLimit":lLimit, "uLimit":uLimit, "uuLimit":uuLimit };
 	}
-	
+
+	this.dwn = downward;	
 	function downward( price ){
 		
 		if(price.close < lLimit ){
@@ -122,7 +123,8 @@ function pfGen () {
 			llLimit = uLimit-3*increment;
 			this.pfFunction = upward;
 		}
-		
+	
+		return { "llLimit":llLimit, "lLimit":lLimit, "uuLimit":uuLimit, "uLimit":uLimit, "curSeries":curSeries };	
 	}
 	
 	function upward( price ){

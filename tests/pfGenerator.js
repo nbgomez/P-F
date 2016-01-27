@@ -88,4 +88,14 @@ describe( "pfgenerator", function(){
 		assert.equal( 28, unk.uuLimit );
 		
 	});
+	
+	it( "unknown", function () {
+		
+		var pf = new pfgen();
+		var limits = pf.fnc( {"close":25 } );
+		var unk = pf.unk( {"close":21 } );
+		var dwn = pf.dwn( {"close":20.5} );		
+		
+		debug( dwn );
+	});
 });
