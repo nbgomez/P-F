@@ -89,7 +89,7 @@ describe( "pfgenerator", function(){
 		
 	});
 	
-	it( "unknown", function () {
+	it( "dwn", function () {
 		
 		var pf = new pfgen();
 		var limits = pf.fnc( {"close":25 } );
@@ -97,5 +97,12 @@ describe( "pfgenerator", function(){
 		var dwn = pf.dwn( {"close":20.5} );		
 		
 		debug( dwn );
+		
+		assert.equal( 20, unk.lLimit );
+		assert.equal( 23, unk.uuLimit );
+		
+		dwn= pf.dwn( {"close":19.99 } )
+		assert.equal( 19.5, unk.lLimit );
+		assert.equal( 23, unk.uuLimit );
 	});
 });

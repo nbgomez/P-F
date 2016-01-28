@@ -147,6 +147,11 @@ function pfGen () {
 		
 	}
 	
+	this.getReversalDistance= function ( quote ){
+		var limits = getLimits( quote.close );
+	
+}; 	
+	
 	this.pfFunction = initialLimits;
 };
 
@@ -159,5 +164,9 @@ pfGen.prototype.parsePrices = function(quotes){
   
   return this.chartData;
 };
-  	
+
+pfGen.prototype.getReversalDistance( quote ){
+	var limits = getLimits( quote.close );
+	
+}; 	
 module.exports = pfGen;
