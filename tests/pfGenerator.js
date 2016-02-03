@@ -99,20 +99,30 @@ describe( "pfgenerator", function(){
 		//debug( dwn );
 		
 		dwn = pf.getReversalDistance( { "close":23.5 });
-		assert.equal( 20, dwn.downward );
+		assert.equal( 19.5, dwn.downward );
+		assert.equal( 26, dwn.upward );
 		debug( "reversal",  dwn );
 		
 		dwn = pf.getReversalDistance( { "close":22.5 });
-		assert.equal( 19.5, dwn.downward );
+		assert.equal( 19.0, dwn.downward );
+		debug( "reversal",  dwn );
+		
+		dwn = pf.getReversalDistance( { "close":20.5 });
+		assert.equal( 18.0, dwn.downward );
+		debug( "reversal",  dwn );
+		
+		dwn = pf.getReversalDistance( { "close":19.75 });
+		assert.equal( 17.50, dwn.downward );
+		assert.equal( 22, dwn.upward );
 		debug( "reversal",  dwn );
 		
 
-		assert.equal( 20, unk.lLimit );
-		assert.equal( 23, unk.uuLimit );
+		//assert.equal( 20, unk.lLimit );
+		//assert.equal( 23, unk.uuLimit );
 
-		dwn= pf.dwn( {"close":19.99 } )
-		assert.equal( 19.5, unk.lLimit );
-		assert.equal( 23, unk.uuLimit );
+		//dwn= pf.dwn( {"close":19.99 } )
+		//assert.equal( 19.5, unk.lLimit );
+		//assert.equal( 23, unk.uuLimit );
 
     
 	});

@@ -89,7 +89,7 @@ function pfGen () {
 		//console.log( "unkown", price.close );
 
 		if( price.close >= uuLimit ){
-			console.log( "unknown", uuLimit );
+			//console.log( "unknown", uuLimit );
 
 			curSeries = { 'start': startPrice, 'count': 3 };
 			uLimit = Math.floor(price.close) + increment;
@@ -150,41 +150,64 @@ function pfGen () {
 
 	this.getReversalDistance = function ( quote ){
 		
-		debug( quote.close );
+		//debug( quote.close );
 		var limits = getLimits( quote.close );
     
     var reversals = {};
 
-    if( limits.base > (Math.floor( quote.close ) - limits.increment*3) ){
-    	
-    	debug( "base less than quotes.close - 3*increments ", limits.increment*3 );
-      if( limits.base > (Math.floor( quote.close ) - limits.increment *2) ){
-      	
-      	debug( "base less than quotes.close - 2*increments ", limits.increment*2 );
-        if( limits.base > (Math.floor( quote.close ) - limits.increment*2 ) ){
-        	
-        	debug( "base less than quotes.close - increment ", limits.increment );
-          //var temp = getLimits( quote.close - limits.increment );
-          //reversal.downward = limits.increment - temp.increment ;
-        }
+    if( limits.base > (limits.lower - limits.increment*4) ){
+    	//debug( "4x", quote.close );
+    	if( limits.base > (limits.lower - limits.increment *3) ){
+      	//debug( "3x" );
+      	if( limits.base > (limits.lower - limits.increment*2 ) ){
+        	//debug( "2x" );
+        	var tempLimits = getLimits( limits.lower - limits.increment*2 -.01);	
+        	reversals.downward = limits.lower - limits.increment - tempLimits.increment*2;
+					
+				}
+				else {
+					var tempLimits = getLimits( limits.lower - limits.increment*2 -.01);
+					//debug( Math.floor( quote.close ), tempLimits );
+					reversals.downward = limits.lower - limits.increment*2 - tempLimits.increment*2;
+				}
 
       }
       else {
       
-      	var tempLimits = getLimits( Math.floor( quote.close )- limits.increment*2 -1);
-      	debug( "2x",tempLimits );
-				reversals.downward = Math.floor( quote.close ) - limits.increment*2  - tempLimits.increment;
+      	var tempLimits = getLimits( limits.lower - limits.increment*3 - .01);
+      	//debug( "23",tempLimits );
+				reversals.downward = limits.lower - limits.increment*3  - tempLimits.increment;
 				
-				debug( Math.floor( quote.close ), limits.increment*2, tempLimits.increment );	
+				//debug( Math.floor( quote.close ), limits.increment*3, tempLimits.increment );	
 				
 			}
-    }else{
-      debug( Math.floor( quote.close ), Math.floor( quote.close )- limits.increment*3 );
-			reversals.downward = Math.floor( quote.close ) - limits.increment*3 ;
+    }
+    else{
+      //debug( limits, limits.lower, limits.lower - limits.increment*4 );
+			reversals.downward = limits.lower - limits.increment*4 ;
 
     }
 
-    debug( "reversal", reversals );
+		debug (limits);
+		if( limits.nextBase < (limits.lower + limits.increment*3)){
+			if( limits.nextBase < (limits.lower + limits.increment * 2 ) ){
+				if( limits.nextBase < (limits.lower + limits.increment ) ) {
+					reversals.upward = limits.lower + limits.increment + tempLimits.increment*2;
+				}
+				else {
+					reversals.upward = limits.lower + limits.increment*2 + tempLimits.increment;
+				}
+			}
+			else {
+				
+			}
+			
+		}
+		else{
+			reversals.upward = (limits.lower + limits.increment*3);
+		}
+		     
+    //debug( "reversal", reversals );
     return reversals;
   };
 
@@ -194,7 +217,7 @@ function pfGen () {
 pfGen.prototype.parsePrices = function(quotes){
 	var self = this;
 	quotes.forEach( function( val){
-		debug( val );
+		//debug( val );
   	self.pfFunction( val );
   });
 
