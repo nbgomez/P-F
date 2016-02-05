@@ -192,10 +192,20 @@ function pfGen () {
 		if( limits.nextBase < (limits.lower + limits.increment*3)){
 			if( limits.nextBase < (limits.lower + limits.increment * 2 ) ){
 				if( limits.nextBase < (limits.lower + limits.increment ) ) {
+					
+					var tempLimits = getLimits( limits.lower + limits.increment );
+					//debug( limits );					
+					//debug( tempLimits );
 					reversals.upward = limits.lower + limits.increment + tempLimits.increment*2;
+				
 				}
 				else {
-					reversals.upward = limits.lower + limits.increment*2 + tempLimits.increment;
+					
+					var tempLimits = getLimits( limits.lower + limits.increment );
+					debug( limits );					
+					debug( tempLimits );
+					reversals.upward = limits.lower + limits.increment + tempLimits.increment*2;
+					
 				}
 			}
 			else {

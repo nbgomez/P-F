@@ -89,7 +89,7 @@ describe( "pfgenerator", function(){
 
 	});
 
-	it( "dwn", function () {
+	it( "dwnup", function () {
 
 		var pf = new pfgen();
 		var limits = pf.fnc( {"close":25 } );
@@ -101,15 +101,15 @@ describe( "pfgenerator", function(){
 		dwn = pf.getReversalDistance( { "close":23.5 });
 		assert.equal( 19.5, dwn.downward );
 		assert.equal( 26, dwn.upward );
-		debug( "reversal",  dwn );
+		//debug( "reversal",  dwn );
 		
 		dwn = pf.getReversalDistance( { "close":22.5 });
 		assert.equal( 19.0, dwn.downward );
-		debug( "reversal",  dwn );
+		//debug( "reversal",  dwn );
 		
 		dwn = pf.getReversalDistance( { "close":20.5 });
 		assert.equal( 18.0, dwn.downward );
-		debug( "reversal",  dwn );
+		//debug( "reversal",  dwn );
 		
 		dwn = pf.getReversalDistance( { "close":19.75 });
 		assert.equal( 17.50, dwn.downward );
