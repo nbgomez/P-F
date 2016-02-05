@@ -109,13 +109,17 @@ describe( "pfgenerator", function(){
 		
 		dwn = pf.getReversalDistance( { "close":20.5 });
 		assert.equal( 18.0, dwn.downward );
+		assert.equal( 23, dwn.upward );
 		//debug( "reversal",  dwn );
 		
 		dwn = pf.getReversalDistance( { "close":19.75 });
 		assert.equal( 17.50, dwn.downward );
 		assert.equal( 22, dwn.upward );
-		debug( "reversal",  dwn );
+		//debug( "reversal",  dwn );
 		
+		dwn = pf.getReversalDistance( { "close":19.25 });
+		assert.equal( 17.0, dwn.downward );
+		assert.equal( 21, dwn.upward );
 
 		//assert.equal( 20, unk.lLimit );
 		//assert.equal( 23, unk.uuLimit );

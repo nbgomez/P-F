@@ -202,18 +202,25 @@ function pfGen () {
 				else {
 					
 					var tempLimits = getLimits( limits.lower + limits.increment );
-					debug( limits );					
-					debug( tempLimits );
+					//debug( limits );					
+					//debug( tempLimits );
 					reversals.upward = limits.lower + limits.increment + tempLimits.increment*2;
 					
 				}
 			}
 			else {
 				
+				var tempLimits = getLimits( limits.lower + limits.increment*2 );
+					//debug( limits );					
+					//debug( tempLimits );
+					reversals.upward = limits.lower + limits.increment*2 + tempLimits.increment;
+				
 			}
 			
 		}
 		else{
+			debug( limits );
+			debug( limits.lower + limits.increment*3 );
 			reversals.upward = (limits.lower + limits.increment*3);
 		}
 		     
