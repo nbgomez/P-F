@@ -16,7 +16,7 @@ router.get('/getPrices/:symbol', function(req, res, next) {
 	
 	config = { symbol: ticker,
 						from: '2014-01-01',
-						to: '2016-01-16' 
+						to: '2016-04-08' 
 						// period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
 						};
 						
@@ -31,10 +31,11 @@ router.get('/getPrices/:symbol', function(req, res, next) {
 	  //quotes.forEach( function (item) { console.log( item ) } );
 	  //console.log( quotes.toString() );
 	  var pf = new pfgen();
-	  debug( pf.parsePrices( quotes ) );
+	  var pfData = pf.parsePrices( quotes );
+	  debug( pfData );
 	  
 	  res.writeHead( 200, { 'content-type':'x-application/json'});
-	  res.end( JSON.stringify( quotes ) );
+	  res.end( JSON.stringify( pfData ) );
 	  
 	});
 	

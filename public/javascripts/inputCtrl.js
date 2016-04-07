@@ -86,9 +86,10 @@
   		
   		//console.log( $scope.symbol );	
   		$http.get( '/getPrices/:'+$scope.symbol ).success( function (response) {
-  			response.forEach( function( val){ 
-  			pfFunction( val ); 
-  			});
+  			console.log( response );
+  			//response.forEach( function( val){ 
+  			//pfFunction( val ); 
+  			//});
   		});
   	}
   	

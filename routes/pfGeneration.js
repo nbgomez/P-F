@@ -1,4 +1,5 @@
 var debug = require('debug')('pfgen');
+var fs = require('fs');
 /*
 Price Range	Box Size
 Under 0.25	0.0625
@@ -65,11 +66,16 @@ function pfGen () {
 	var dir = 0;
 
 	this.fnc = initialLimits;
+	this.fs = "./pflog.log";
+	fs.open( this.fs , 'w', function (err,fd) {} );
 
 	function initialLimits ( price ){
 		var limits = getLimits( price.close );
 		//debug("initial limits", getLimits( price.close ));
 
+		
+		fs.appendFile( this.fs, "Initial " + price.close + JSON.stringify( limits ) + "\n" , function (err, fd) {} );
+		
 		uLimit = limits.upper;
 		lLimit = limits.lower;
 		startPrice = lLimit;
@@ -88,6 +94,8 @@ function pfGen () {
 	function unknown( price ){
 		//console.log( "unkown", price.close );
 
+		fs.appendFile( this.fs, "unknown " + price.close + uuLimit +" " + llLimit + "\n" , function (err, fd) {} );
+		
 		if( price.close >= uuLimit ){
 			//console.log( "unknown", uuLimit );
 
