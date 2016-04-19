@@ -127,7 +127,7 @@ function pfGen () {
 		else if ( price.close > uuLimit ) {
 			//debug( curSeries );
 			this.chartData.push( curSeries )
-			curSeries = { 'start': lLimit , 'count': 3 };
+			curSeries = { 'start': lLimit+increment , 'count': 3 };
 			uLimit = Math.ceil(price.close );
 			llLimit = uLimit-3*increment;
 			this.pfFunction = upward;

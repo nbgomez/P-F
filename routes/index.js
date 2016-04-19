@@ -1,4 +1,5 @@
 var debug = require('debug')('index');
+var moment = require('moment')
 var express = require('express');
 var router = express.Router();
 var pfgen = require('./pfGeneration' );
@@ -13,14 +14,17 @@ router.get('/', function(req, res, next) {
 router.get('/getPrices/:symbol', function(req, res, next) {
 	
 	var ticker = req.params.symbol.substring(1);
+	var dToday = new Date();
+	var sToday = moment( dToday ).format( "YYYY-MM-DD" );
+	var sLastYear = moment().subtract(1,'year').format( "YYYY-MM-DD" );
 	
 	config = { symbol: ticker,
-						from: '2014-01-01',
-						to: '2016-04-08' 
+						from: sLastYear,
+						to: sToday 
 						// period: 'd'  // 'd' (daily), 'w' (weekly), 'm' (monthly), 'v' (dividends only)
 						};
 						
-	debug( config );
+	console.log( config );
 	
 	yahooFinance.historical(config
 	  
