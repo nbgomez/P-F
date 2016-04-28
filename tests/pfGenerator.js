@@ -8,7 +8,9 @@ describe( "pfgenerator", function(){
 
 		var pf = new pfgen();
 
-		var quotes = [ {"close":25} ];
+    assert( pf.isInBox( {"close":25.5} , 25 ) );
+
+		/*var quotes = [ {"close":25} ];
 		var parsed = pf.parsePrices( quotes );
 		//debug( parsed );
 		assert.equal( true, true );
@@ -61,7 +63,7 @@ describe( "pfgenerator", function(){
 		assert.equal( limits.lower, 5 );
 		assert.equal( limits.upper,5.5 );
 		assert.equal( limits.base, 5 );
-
+    */
 	});
 
 	it( "unknown", function () {
@@ -97,26 +99,26 @@ describe( "pfgenerator", function(){
 		var dwn = pf.dwn( {"close":20.5} );
 
 		//debug( dwn );
-		
+
 		dwn = pf.getReversalDistance( { "close":23.5 });
 		assert.equal( 19.5, dwn.downward );
 		assert.equal( 26, dwn.upward );
 		//debug( "reversal",  dwn );
-		
+
 		dwn = pf.getReversalDistance( { "close":22.5 });
 		assert.equal( 19.0, dwn.downward );
 		//debug( "reversal",  dwn );
-		
+
 		dwn = pf.getReversalDistance( { "close":20.5 });
 		assert.equal( 18.0, dwn.downward );
 		assert.equal( 23, dwn.upward );
 		//debug( "reversal",  dwn );
-		
+
 		dwn = pf.getReversalDistance( { "close":19.75 });
 		assert.equal( 17.50, dwn.downward );
 		assert.equal( 22, dwn.upward );
 		//debug( "reversal",  dwn );
-		
+
 		dwn = pf.getReversalDistance( { "close":19.25 });
 		assert.equal( 17.0, dwn.downward );
 		assert.equal( 21, dwn.upward );
@@ -128,6 +130,6 @@ describe( "pfgenerator", function(){
 		//assert.equal( 19.5, unk.lLimit );
 		//assert.equal( 23, unk.uuLimit );
 
-    
+
 	});
 });

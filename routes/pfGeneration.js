@@ -13,7 +13,29 @@ Under 0.25	0.0625
 1,000 to 25,000	50.00
 25,000 and up	500.00*/
 var upperLevels = [ 0, 0.25, 		1, 			5, 		20, 100, 200, 500, 1000, 25000, 1000000 ];//should never get here
-var increments = [ 	0, 0.0625, 	0.125, 	0.25, 0.5, 1, 	2, 	4, 		5, 		50];
+var increments = [ 	0.0625, 	0.125, 	0.25, 0.5, 1, 	2, 	4, 		5, 		50];
+
+var getBox = function(  value ) {
+
+  var index = upperLevels.length-1;
+  //debug( index );
+  while( value < upperLevels[index] ){
+    index --;
+    //debug( index, upperLevels[index] );
+  };
+
+  var iCount = 0;
+  while( value > upperLevels[index] + iCount * increments[index] ){
+    debug( "while", index, iCount, increments[index] );
+    iCount ++;
+  };
+  iCount --;
+
+  debug( "getBox", value, index,iCount, upperLevels[index] + iCount * increments[index] );
+
+  return upperLevels[index] + iCount * increments[index];
+
+};
 
 var getIncrement = function (value){
 
@@ -73,9 +95,9 @@ function pfGen () {
 		var limits = getLimits( price.close );
 		//debug("initial limits", getLimits( price.close ));
 
-		
+
 		fs.appendFile( this.fs, "Initial " + price.close + JSON.stringify( limits ) + "\n" , function (err, fd) {} );
-		
+
 		uLimit = limits.upper;
 		lLimit = limits.lower;
 		startPrice = lLimit;
@@ -95,7 +117,7 @@ function pfGen () {
 		//console.log( "unkown", price.close );
 
 		fs.appendFile( this.fs, "unknown " + price.close + uuLimit +" " + llLimit + "\n" , function (err, fd) {} );
-		
+
 		if( price.close >= uuLimit ){
 			//console.log( "unknown", uuLimit );
 
@@ -157,10 +179,10 @@ function pfGen () {
 	}
 
 	this.getReversalDistance = function ( quote ){
-		
+
 		//debug( quote.close );
 		var limits = getLimits( quote.close );
-    
+
     var reversals = {};
 
     if( limits.base > (limits.lower - limits.increment*4) ){
@@ -169,9 +191,9 @@ function pfGen () {
       	//debug( "3x" );
       	if( limits.base > (limits.lower - limits.increment*2 ) ){
         	//debug( "2x" );
-        	var tempLimits = getLimits( limits.lower - limits.increment*2 -.01);	
+        	var tempLimits = getLimits( limits.lower - limits.increment*2 -.01);
         	reversals.downward = limits.lower - limits.increment - tempLimits.increment*2;
-					
+
 				}
 				else {
 					var tempLimits = getLimits( limits.lower - limits.increment*2 -.01);
@@ -181,13 +203,13 @@ function pfGen () {
 
       }
       else {
-      
+
       	var tempLimits = getLimits( limits.lower - limits.increment*3 - .01);
       	//debug( "23",tempLimits );
 				reversals.downward = limits.lower - limits.increment*3  - tempLimits.increment;
-				
-				//debug( Math.floor( quote.close ), limits.increment*3, tempLimits.increment );	
-				
+
+				//debug( Math.floor( quote.close ), limits.increment*3, tempLimits.increment );
+
 			}
     }
     else{
@@ -196,42 +218,42 @@ function pfGen () {
 
     }
 
-		debug (limits);
+		//debug (limits);
 		if( limits.nextBase < (limits.lower + limits.increment*3)){
 			if( limits.nextBase < (limits.lower + limits.increment * 2 ) ){
 				if( limits.nextBase < (limits.lower + limits.increment ) ) {
-					
+
 					var tempLimits = getLimits( limits.lower + limits.increment );
-					//debug( limits );					
+					//debug( limits );
 					//debug( tempLimits );
 					reversals.upward = limits.lower + limits.increment + tempLimits.increment*2;
-				
+
 				}
 				else {
-					
+
 					var tempLimits = getLimits( limits.lower + limits.increment );
-					//debug( limits );					
+					//debug( limits );
 					//debug( tempLimits );
 					reversals.upward = limits.lower + limits.increment + tempLimits.increment*2;
-					
+
 				}
 			}
 			else {
-				
+
 				var tempLimits = getLimits( limits.lower + limits.increment*2 );
-					//debug( limits );					
+					//debug( limits );
 					//debug( tempLimits );
 					reversals.upward = limits.lower + limits.increment*2 + tempLimits.increment;
-				
+
 			}
-			
+
 		}
 		else{
-			debug( limits );
-			debug( limits.lower + limits.increment*3 );
+			//debug( limits );
+			//debug( limits.lower + limits.increment*3 );
 			reversals.upward = (limits.lower + limits.increment*3);
 		}
-		     
+
     //debug( "reversal", reversals );
     return reversals;
   };
@@ -247,6 +269,13 @@ pfGen.prototype.parsePrices = function(quotes){
   });
 
   return this.chartData;
+};
+
+pfGen.prototype.isInBox = function( quote, boxPrice ){
+
+  var curBox = getBox( quote.close );
+
+  return curBox == boxPrice;
 };
 
 
