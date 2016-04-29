@@ -9,13 +9,15 @@ describe( "pfgenerator", function(){
 		var pf = new pfgen();
 
     assert( pf.isInBox( {"close":25.5} , 25 ) );
+    assert( ! pf.isInBox( {"close":25.5} , 26 ) );
 
-		/*var quotes = [ {"close":25} ];
+
+		var quotes = [ {"close":25}, { "close":26}, { "close":26}   ];
 		var parsed = pf.parsePrices( quotes );
 		//debug( parsed );
-		assert.equal( true, true );
+    assert.equal( parsed.length, 1 );
 
-		var limits = pf.fnc( {"close":25 } );
+		/*var limits = pf.fnc( {"close":25 } );
 		//debug( limits );
 		assert.equal( limits.lower, 25 );
 		assert.equal( limits.upper,26 );
